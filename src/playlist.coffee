@@ -3,7 +3,8 @@ CSON = require 'cson-parser'
 
 module.exports = class Playlist
   active: null
-  list: []
+  filteredIds: []
+  __list: []
   __previousSongIds: []
   __nextSongIds: []
   __repeat: false
@@ -12,7 +13,7 @@ module.exports = class Playlist
   constructor: (@$rootScope) ->
     fs.readFile './src/playlist.cson', (err, result) =>
       return err if err
-      @list = CSON.parse result
+      @__list = CSON.parse result
       @$rootScope.$broadcast 'playlistReloaded'
     @__defineGetter__ 'repeat', => @__repeat
     @__defineSetter__ 'repeat', (val) => @__repeat = val
@@ -21,6 +22,8 @@ module.exports = class Playlist
       @__shuffle = val
       @__previousSongIds = []
       @__nextSongIds = []
+    @__defineGetter__ 'list', => @__list.filter (song, id) =>
+      @filteredIds.indexOf(id) is -1
 
   __selectSong: (id) ->
     @active = parseInt id
@@ -60,3 +63,18 @@ module.exports = class Playlist
     @__previousSongIds.push @active
 
     @__selectSong currentId
+
+  setFilter: (filter) ->
+    @__previousSongIds = []
+    @__nextSongIds = []
+    @filteredIds = []
+    filters = filter.split ' '
+    for song, id in @__list
+      found = no
+      for filter in filters
+        if song.title.toLowerCase().indexOf(filter.toLowerCase()) isnt -1
+          found = yes
+          break
+      @filteredIds.push id if not found
+
+    @$rootScope.$broadcast 'playlistReloaded'

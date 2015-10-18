@@ -32,6 +32,7 @@ module.exports = (angular, document) ->
     $scope.videoLength = 0
     $scope.timeElapsed = 0
     $scope.progress = 0
+    $scope.filter = ''
 
     $scope.toggleShuffle = ->
       $scope.shuffle = not $scope.shuffle
@@ -76,6 +77,8 @@ module.exports = (angular, document) ->
     $scope.previous = -> $rootScope.$broadcast 'requestPreviousSong'
     $scope.next = -> $rootScope.$broadcast 'requestNextSong'
 
+    $scope.setFilter = -> $rootScope.$broadcast 'requestFilter', $scope.filter
+
   player.controller 'playlistController', ($scope, $rootScope) ->
     $scope.playlist = new Playlist $rootScope
 
@@ -90,3 +93,6 @@ module.exports = (angular, document) ->
 
     $rootScope.$on 'requestShuffleChange', (event, shuffle) ->
       $scope.playlist.shuffle = shuffle
+
+    $rootScope.$on 'requestFilter', (event, filter) ->
+      $scope.playlist.setFilter filter

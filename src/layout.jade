@@ -30,7 +30,7 @@ html(lang="en", data-framework="angularjs")
         .ui.item {{ calculateTime(timeElapsed) }} / {{ calculateTime(videoLength) }}
         .ui.right.floated.item
           .ui.icon.input
-            input(type='text', placeholder='Filter')
+            input(type='text', placeholder='Filter', ng-model='filter', ng-keyup="$event.keyCode == 13 ? setFilter() : null")
             i.filter.icon
       .ui.bottom.attached.blue.progress(ng-click="jump($event)")
         .bar
