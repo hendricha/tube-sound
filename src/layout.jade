@@ -1,0 +1,52 @@
+doctype html
+html(lang="en", data-framework="angularjs")
+  head
+    title= pageTitle
+    script(src='./semantic/dist/semantic.js')
+    script(src='./node_modules/angular/angular.js')
+    script(src='./src/app.js')
+    link(rel='stylesheet',href='./semantic/dist/semantic.css')
+    link(rel='stylesheet',href='./ui/styles.css')
+    
+  body(ng-app='player')
+    #controls(ng-controller="controlsController")
+      .ui.basic.attached.inverted.borderless.toolbar.menu
+        .ui.mainMenu.item
+          i.black.sidebar.link.icon
+        .ui.item
+          .ui.icon.buttons
+            .ui.button(ng-click="previous()")
+              i.fast.backward.icon
+            .ui.button(ng-click="playPause()")
+              i.icon(ng-class="{ play : state == 'paused', pause : state == 'playing', 'spinner loading' : state == 'loading' }")
+            .ui.button(ng-click="next()")
+              i.fast.forward.icon
+        .ui.item
+          .ui.icon.buttons
+            .ui.button(ng-click="toggleShuffle()", ng-class="{ active : shuffle }")
+              i.shuffle.icon
+            .ui.button(ng-click="toggleRepeat()", ng-class="{ active : repeat }")
+              i.repeat.icon
+        .ui.item {{ calculateTime(timeElapsed) }} / {{ calculateTime(videoLength) }}
+        .ui.right.floated.item
+          .ui.icon.input
+            input(type='text', placeholder='Filter')
+            i.filter.icon
+      .ui.bottom.attached.blue.progress(ng-click="jump($event)")
+        .bar
+
+    #playList.pusher
+      #song-list.ui.selection.divided.list(ng-controller="playlistController")
+        .item(ng-repeat="(id, song) in playlist.list", ng-dblclick="playlist.playSong(id)", ng-class="{ active : playlist.active == id }")
+          img.ui.avatar.image(ng-src="http://img.youtube.com/vi/{{ song.YTId }}/default.jpg")
+          .content
+            .header {{ song.title }}
+            .description {{ song.length }}
+
+    .ui.sidebar.inverted.grey.vertical.menu
+      .item 1
+      .item 1
+      .item 3
+
+  script(src='./ui/sidebar.js')
+  script(src='./ui/hoverButtons.js')

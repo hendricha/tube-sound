@@ -1,0 +1,58 @@
+::-webkit-scrollbar {
+    background-color: transparent;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-button {
+    display:none;
+}
+::-webkit-scrollbar-thumb {
+    background: #9b9d9e;
+    border-radius: 3ex;
+    border: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #828586;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #4a90d9;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ui.list {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ui.progress {
+  background-color: white !important;
+  transition: margin-top 200ms ease, height 200ms ease;
+}
+
+.ui.progress .bar{
+  transition: margin-top 200ms ease, height 200ms ease;
+}
+
+.ui.progress:hover {
+  margin-top: -7px;
+}
+
+.ui.progress:hover,
+.ui.progress:hover .bar {
+  height: 10px;
+}
+
+.inverted.toolbar.menu {
+  background-color: #d6d6d6;
+}
+
+.inverted.toolbar.menu .item {
+  color: #222;
+}

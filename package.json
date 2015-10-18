@@ -1,0 +1,24 @@
+{
+  "window": {
+    "toolbar": false,
+    "width": 610,
+    "min_width": 610,
+    "height": 500,
+    "min_height": 100
+  },
+  "webkit": {
+    "plugin": true
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/nw",
+    "debug": "./node_modules/.bin/nw --debug"
+  },
+  "name": "nw-demo",
+  "version": "0.0.1",
+  "main": "index.html",
+  "dependencies": {
+    "cson-parser": "^1.2.0",
+    "jQuery": "*",
+    "jade": "^1.11.0"
+  }
+}

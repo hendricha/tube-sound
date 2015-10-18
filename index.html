@@ -1,0 +1,14 @@
+<script>
+  var jade = require('jade');
+  var jQuery = require('jQuery');
+  var $ = jQuery;
+  var gui = require('nw.gui');
+
+  if (gui.App.argv.indexOf('--debug') != -1) {
+    gui.Window.get().showDevTools();
+  }
+
+  document.open();
+  document.write(jade.compileFile('./src/layout.jade')());
+  document.close();
+</script>
