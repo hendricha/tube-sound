@@ -13,12 +13,17 @@
     "start": "./node_modules/.bin/nw",
     "debug": "./node_modules/.bin/nw --debug"
   },
-  "name": "nw-demo",
+  "name": "tube-sound",
   "version": "0.0.1",
   "main": "index.html",
   "dependencies": {
     "cson-parser": "^1.2.0",
     "jQuery": "*",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "angular": "*",
+    "coffee-script": "*",
+    "cson-parser": "*",
+    "semantic-ui": "*",
+    "youtube-video": "*"
   }
 }
