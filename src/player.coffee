@@ -34,6 +34,9 @@ module.exports = (angular, document) ->
     $scope.progress = 0
     $scope.filter = ''
 
+    $scope.toggleAdd = ->
+      $rootScope.$broadcast 'requestToggleAdd'
+
     $scope.toggleShuffle = ->
       $scope.shuffle = not $scope.shuffle
       $rootScope.$broadcast 'requestShuffleChange', $scope.shuffle
@@ -41,11 +44,7 @@ module.exports = (angular, document) ->
       $scope.repeat = not $scope.repeat
       $rootScope.$broadcast 'requestRepeatChange', $scope.repeat
 
-    $scope.calculateTime = (seconds) ->
-      minutes = parseInt seconds / 60
-      seconds = parseInt(seconds - minutes * 60).toString()
-      if seconds.length is 1 then seconds = "0#{seconds}"
-      "#{minutes}:#{seconds}"
+    $scope.calculateTime = require './calculateTime'
 
     setProgress = (progress) ->
       $('.progress .bar').css width: "#{progress * 100}%"
@@ -57,6 +56,7 @@ module.exports = (angular, document) ->
       $('#controls').append '<div id="videoPlayer"></div>'
       youtubeVideo song.YTId, videoPlayerOptions, (err, player) ->
         return console.log err if err
+        console.log "ALMA", player.getVideoData()
         $scope.videoLength = player.getDuration()
         durationInterval = setInterval ->
           $scope.timeElapsed = videoPlayer.getCurrentTime()
@@ -74,6 +74,7 @@ module.exports = (angular, document) ->
         when 'paused' then videoPlayer?.playVideo()
         when 'playing' then videoPlayer?.pauseVideo()
 
+    $scope.add = require './add'
     $scope.previous = -> $rootScope.$broadcast 'requestPreviousSong'
     $scope.next = -> $rootScope.$broadcast 'requestNextSong'
 
@@ -96,3 +97,9 @@ module.exports = (angular, document) ->
 
     $rootScope.$on 'requestFilter', (event, filter) ->
       $scope.playlist.setFilter filter
+
+  player.controller 'addController', require './add'
+
+  console.log "ALMA", require('./confirm').controller
+
+  player.controller 'confirmController', require('./confirm').controller

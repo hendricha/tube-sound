@@ -1,2 +1,7 @@
 node_modules
 npm-debug.log
+semantic/src
+semantic/tasks
+semantic/gulpfile.js
+semantic/dist/components
+semantic/dist/themes

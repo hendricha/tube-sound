@@ -38,6 +38,7 @@ html, body {
 
 .ui.progress .bar{
   transition: margin-top 200ms ease, height 200ms ease;
+  min-width: 0%!important;
 }
 
 .ui.progress:hover {
@@ -55,4 +56,29 @@ html, body {
 
 .inverted.toolbar.menu .item {
   color: #222;
+}
+
+
+.modal {
+  position: fixed;
+  top: 60px!important;
+}
+
+.modal .card {
+  margin: 1em auto;
+}
+.modal .hidden.card {
+  display: none;
+}
+
+input::-webkit-input-placeholder {
+  color: grey!important;
+}
+
+#song-list .item .right.floated.buttons {
+  display: none;
+}
+
+#song-list .item:hover .right.floated.buttons {
+  display: block;
 }

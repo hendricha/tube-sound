@@ -1,5 +1,6 @@
 fs = require 'fs'
 CSON = require 'cson-parser'
+$ = require 'jQuery'
 
 module.exports = class Playlist
   active: null
@@ -24,6 +25,10 @@ module.exports = class Playlist
       @__nextSongIds = []
     @__defineGetter__ 'list', => @__list.filter (song, id) =>
       @filteredIds.indexOf(id) is -1
+
+    @$rootScope.$on 'addSong', (event, song) =>
+      @__list.push song
+      @$rootScope.$broadcast 'playlistReloaded'
 
   __selectSong: (id) ->
     @active = parseInt id
@@ -77,4 +82,25 @@ module.exports = class Playlist
           break
       @filteredIds.push id if not found
 
+    @$rootScope.$broadcast 'playlistReloaded'
+
+  open: (id) ->
+    window.gui.Shell.openExternal "https://youtube.com/watch?v=#{@__list[id].YTId}"
+
+  moveUp: (id) ->
+    return if id is 0 or @__list.length < 2
+    temp = @__list[id]
+    @__list[id] = @__list[id - 1]
+    @__list[id - 1] = temp
+    @$rootScope.$broadcast 'playlistReloaded'
+
+  moveDown: (id) ->
+    return if id is @__list.length - 1 or @__list.length < 2
+    temp = @__list[id]
+    @__list[id] = @__list[id + 1]
+    @__list[id + 1] = temp
+    @$rootScope.$broadcast 'playlistReloaded'
+
+  remove: (id) -> require('./confirm') 'Are you sure you want to remove this song?', =>
+    @__list.splice id, 1
     @$rootScope.$broadcast 'playlistReloaded'

@@ -11,8 +11,9 @@ html(lang="en", data-framework="angularjs")
   body(ng-app='player')
     #controls(ng-controller="controlsController")
       .ui.basic.attached.inverted.borderless.toolbar.menu
-        .ui.mainMenu.item
-          i.black.sidebar.link.icon
+        .ui.item
+          .ui.icon.button(ng-click="toggleAdd()")
+            i.plus.icon
         .ui.item
           .ui.icon.buttons
             .ui.button(ng-click="previous()")
@@ -35,18 +36,47 @@ html(lang="en", data-framework="angularjs")
       .ui.bottom.attached.blue.progress(ng-click="jump($event)")
         .bar
 
-    #playList.pusher
+    .ui.add.modal(ng-controller="addController")
+      .header Add youtube link
+      .content
+        .ui.fluid.action.input(ng-class="{ error : error }")
+          input(placeholder="http://www.youtube.com/watch?v=SOMETHING",ng-model='url')
+          .ui.icon.button(ng-click="fetchData($evalAsync)")
+            i.right.icon(ng-class="{ chevron : state == 'idle', 'spinner loading' : state == 'loading' }")
+        .ui.hidden.card
+          .image
+            img(ng-src="http://img.youtube.com/vi/{{ yTId }}/hqdefault.jpg")
+          .content
+            .header(ng-bind='title')
+            .description(ng-bind='length')
+      .actions
+        .ui.cancel.button(ng-click="hide()") Cancel
+        .ui.approve.button(ng-class="{ disabled : !addable }", ng-click="add()") Add
+
+    .ui.small.confirm.modal(ng-controller="confirmController")
+      .header(ng-bind="message")
+      .actions
+        .ui.cancel.button(ng-click="cancel()") Cancel
+        .ui.approve.button(ng-click="approve()") OK
+
+    #playList
       #song-list.ui.selection.divided.list(ng-controller="playlistController")
-        .item(ng-repeat="(id, song) in playlist.list", ng-dblclick="playlist.playSong(id)", ng-class="{ active : playlist.active == id }")
+        .item(
+          ng-attr-id="{{ 'song-' + id }}",
+          ng-repeat="(id, song) in playlist.list",
+          ng-dblclick="playlist.playSong(id)",
+          ng-class="{ active : playlist.active == id }"
+        )
+          .right.floated.ui.buttons
+            .ui.icon.button(ng-click="playlist.open(id)")
+              i.youtube.icon
+            .ui.icon.button(ng-click="playlist.moveUp(id)")
+              i.caret.up.icon
+            .ui.icon.button(ng-click="playlist.moveDown(id)")
+              i.caret.down.icon
+            .ui.icon.button(ng-click="playlist.remove(id)")
+              i.remove.icon
           img.ui.avatar.image(ng-src="http://img.youtube.com/vi/{{ song.YTId }}/default.jpg")
           .content
             .header {{ song.title }}
             .description {{ song.length }}
-
-    .ui.sidebar.inverted.grey.vertical.menu
-      .item 1
-      .item 1
-      .item 3
-
-  script(src='./ui/sidebar.js')
-  script(src='./ui/hoverButtons.js')
