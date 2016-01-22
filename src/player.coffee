@@ -56,7 +56,6 @@ module.exports = (angular, document) ->
       $('#controls').append '<div id="videoPlayer"></div>'
       youtubeVideo song.YTId, videoPlayerOptions, (err, player) ->
         return console.log err if err
-        console.log "ALMA", player.getVideoData()
         $scope.videoLength = player.getDuration()
         durationInterval = setInterval ->
           $scope.timeElapsed = videoPlayer.getCurrentTime()
@@ -99,7 +98,5 @@ module.exports = (angular, document) ->
       $scope.playlist.setFilter filter
 
   player.controller 'addController', require './add'
-
-  console.log "ALMA", require('./confirm').controller
 
   player.controller 'confirmController', require('./confirm').controller
