@@ -1,6 +1,7 @@
 fs = require 'fs'
-CSON = require 'cson-parser'
 $ = require 'jQuery'
+
+store = require './store'
 
 module.exports = class Playlist
   active: null
@@ -12,10 +13,9 @@ module.exports = class Playlist
   __shuffle: false
 
   constructor: (@$rootScope) ->
-    fs.readFile './src/playlist.cson', (err, result) =>
-      return err if err
-      @__list = CSON.parse result
-      @$rootScope.$broadcast 'playlistReloaded'
+    @$rootScope.$on 'playlistReloaded', (event, song) => store.list = @__list
+    @__list = store.list
+
     @__defineGetter__ 'repeat', => @__repeat
     @__defineSetter__ 'repeat', (val) => @__repeat = val
     @__defineGetter__ 'shuffle', => @__shuffle
@@ -25,7 +25,6 @@ module.exports = class Playlist
       @__nextSongIds = []
     @__defineGetter__ 'list', => @__list.filter (song, id) =>
       @filteredIds.indexOf(id) is -1
-
     @$rootScope.$on 'addSong', (event, song) =>
       @__list.push song
       @$rootScope.$broadcast 'playlistReloaded'
