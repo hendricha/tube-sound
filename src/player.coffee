@@ -6,7 +6,7 @@ Playlist = require './playlist'
 
 KEY_F12 = 123
 
-module.exports = (angular, document) ->
+module.exports = (angular, document, Notification) ->
   global.document = document
 
   $(document).on 'keyup', (event) ->
@@ -63,6 +63,11 @@ module.exports = (angular, document) ->
       $('#controls').append '<div id="videoPlayer"></div>'
       youtubeVideo song.YTId, videoPlayerOptions, (err, player) ->
         return console.log err if err
+
+        notification = new Notification "Tube Sound",
+          icon: "http://img.youtube.com/vi/#{ song.YTId }/default.jpg"
+          body: song.title
+
         $scope.videoLength = player.getDuration()
         durationInterval = setInterval ->
           $scope.timeElapsed = videoPlayer.getCurrentTime()
