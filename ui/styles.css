@@ -26,9 +26,17 @@ html, body {
   overflow: hidden;
 }
 
+#playList {
+  height: calc(100% - 50px);
+  display: flex;
+  flex-direction: column;
+}
+
 .ui.list {
   -webkit-user-select: none;
   user-select: none;
+  flex: 1;
+  overflow: scroll;
 }
 
 .ui.progress {
