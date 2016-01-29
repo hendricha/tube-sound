@@ -85,8 +85,29 @@ input::-webkit-input-placeholder {
 
 #song-list .item .right.floated.buttons {
   display: none;
+  z-index: 100;
+  position: relative;
 }
 
 #song-list .item:hover .right.floated.buttons {
   display: block;
+}
+
+#song-list .item {
+  width: 100%;
+}
+
+#song-list .item .content {
+  position: relative;
+  white-space: nowrap;
+  width: calc(100% - 30px);
+  z-index: 0;
+}
+#song-list .item:hover .content {
+  width: calc(100% - 170px);
+}
+
+#song-list .item .content .header {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
