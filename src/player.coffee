@@ -4,8 +4,15 @@ youtubeVideo = require 'youtube-video'
 window = global.window.nwDispatcher.requireNwGui().Window.get()
 Playlist = require './playlist'
 
+KEY_F12 = 123
+
 module.exports = (angular, document) ->
   global.document = document
+
+  $(document).on 'keyup', (event) ->
+    return unless event.keyCode is 123
+    event.stopPropagation()
+    window.showDevTools()
 
   player = angular.module 'player', []
 
